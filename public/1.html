@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
+    <script>
+        // SDK를 초기화 합니다. 사용할 앱의 JavaScript 키를 설정해 주세요.
+        Kakao.init('b6abf2e9cce6f61f9ca7f074d34e2d3a');
+
+        // SDK 초기화 여부를 판단합니다.
+        console.log(Kakao.isInitialized());
+    </script>
+</head>
+
+<body>
+    <a id="custom-login-btn" href="javascript:dong2()" onclick="dong2()">
+        <img src="cookie.jpg" width="222" />
+    </a>
+    <a id="custom-login-btn" href="javascript:loginWithKakao()" onclick="loginWithKakao()">
+        <img src="//k.kakaocdn.net/14/dn/btqCn0WEmI3/nijroPfbpCa4at5EIsjyf0/o.jpg" width="222" />
+    </a>
+    <p id="token-result"></p>
+    <script type="text/javascript">
+        function loginWithKakao() {
+            Kakao.Auth.authorize({
+                redirectUri: 'http://localhost:80'
+            })
+            console.log('mmt');
+        }
+        // 아래는 데모를 위한 UI 코드입니다.
+        getToken()
+        function getToken() {
+            const token = getCookie('authorize-access-token')
+            if (token) {
+                Kakao.Auth.setAccessToken(token)
+                document.getElementById('token-result').innerText = 'login success. token: ' + Kakao.Auth.getAccessToken()
+            }
+        }
+        function getCookie(name) {
+            const value = "; " + document.cookie;
+            const parts = value.split("; " + name + "=");
+            if (parts.length === 2) return parts.pop().split(";").shift();
+        }
+
+        function dong2() {
+            Kakao.Auth.login({
+                success: function (response) {
+                    console.log(response);
+                },
+                fail: function (error) {
+                    console.log(error);
+                },
+            });
+
+        }
+
+    </script>
+</body>
+
+</html>
